@@ -1,0 +1,107 @@
+{
+  "_about": "Everything the README cards say about you, apart from GitHub numbers (those are fetched every night). Edit, commit, and the Action redraws the cards.",
+  "user": "SubhanMalik2000",
+  "name": "Subhan",
+  "monogram": "SA",
+  "role": "Senior Solution Engineer at Mazik Global",
+  "tagline": "I build enterprise portals, admin dashboards and AI features people actually use.",
+  "location": "Karachi, Pakistan",
+  "showGitHubActivity": true,
+  "_showGitHubActivity": "Set to false to hide the GitHub numbers, heatmap and 30-day chart from the README (they are still drawn).",
+  "tags": ["client portals", "admin dashboards", "Power Pages", "AI agents", "automation"],
+
+  "links": {
+    "linkedin": { "label": "LinkedIn", "url": "https://www.linkedin.com/in/muhammad-subhan-ali-4a636618a/" },
+    "email": { "label": "contact@subhanmalikk.com", "url": "mailto:contact@subhanmalikk.com" },
+    "site": { "label": "subhanmalikk.com", "url": "https://subhanmalikk.com" }
+  },
+
+  "whoami": {
+    "host": "subhan@karachi",
+    "summary": "subhan · senior solution engineer · Karachi, Pakistan",
+    "bio": "I build client portals, admin dashboards and AI features for enterprise apps.",
+    "now": [
+      "AB-400 (Power Platform Developer) exam booked for 30 Nov",
+      "GH-300 (GitHub Copilot) exam being rescheduled",
+      "Building subhanmalikk.com, my portfolio as a live dashboard"
+    ]
+  },
+
+  "projects": [
+    {
+      "id": "company-formation",
+      "name": "Company-formation portal",
+      "status": "production",
+      "tint": "green",
+      "icon": "portal",
+      "line": "Customer portal for a client in Saudi Arabia, with an AI assistant over government regulations.",
+      "chips": ["Next.js", "TypeScript", "RAG"],
+      "fact": "client work · details under NDA",
+      "url": ""
+    },
+    {
+      "id": "d365-portals",
+      "name": "Dynamics 365 portals",
+      "status": "production",
+      "tint": "blue",
+      "icon": "dashboard",
+      "line": "Client-facing portals at Mazik Global on Power Pages and Next.js, built on Dataverse.",
+      "chips": ["Power Pages", "Dataverse", "Next.js"],
+      "fact": "client work · details under NDA",
+      "url": ""
+    },
+    {
+      "id": "ai-sentinel",
+      "name": "AI Sentinel",
+      "status": "open source",
+      "tint": "violet",
+      "icon": "shield",
+      "line": "Python SDK for testing AI agents against prompt injection, jailbreaks and tool misuse.",
+      "chips": ["Python", "LLM security", "MIT"],
+      "fact": "in progress · ai-sentinel-sdk",
+      "url": "https://github.com/SubhanMalik2000/ai-sentinel-sdk"
+    },
+    {
+      "id": "portfolio",
+      "name": "subhanmalikk.com",
+      "status": "launching",
+      "tint": "amber",
+      "icon": "browser",
+      "line": "My portfolio as a live developer dashboard. Every number shows where it comes from.",
+      "chips": ["Next.js 16", "TypeScript", "Tailwind"],
+      "fact": "portfolio · launching soon",
+      "url": "https://subhanmalikk.com"
+    }
+  ],
+
+  "stack": [
+    { "label": "Frontend", "items": [
+      ["React", "react"], ["Next.js", "nextdotjs"], ["TypeScript", "typescript"], ["JavaScript", "javascript"],
+      ["Tailwind CSS", "tailwindcss"], ["Material UI", "mui"], ["Redux Toolkit", "redux"], ["HTML5", "html5"], ["CSS", "css"]
+    ]},
+    { "label": "Power Platform", "items": [
+      ["Power Pages"], ["Power Automate"], ["Dataverse"], ["Dynamics 365"], ["Portal development"]
+    ]},
+    { "label": "AI engineering", "items": [
+      ["LangChain", "langchain"], ["LangGraph", "langgraph"], ["LangSmith"], ["RAG"], ["AI agents"],
+      ["OpenAI API"], ["Anthropic API", "anthropic"], ["MCP"], ["pgvector"], ["Pinecone"]
+    ]},
+    { "label": "Backend & data", "items": [
+      ["Python", "python"], ["FastAPI", "fastapi"], ["Pydantic", "pydantic"], ["Node.js", "nodedotjs"], ["Express", "express"],
+      ["Prisma", "prisma"], ["PostgreSQL", "postgresql"], ["Supabase", "supabase"], ["MongoDB", "mongodb"]
+    ]},
+    { "label": "Automation", "items": [
+      ["n8n", "n8n"], ["Make", "make"], ["Power Automate"], ["Webhooks"], ["CRM automation"]
+    ]},
+    { "label": "Tools & cloud", "items": [
+      ["Cursor", "cursor"], ["GitHub Copilot", "githubcopilot"], ["Claude", "claude"], ["ChatGPT"],
+      ["Docker", "docker"], ["GitHub Actions", "githubactions"], ["Vercel", "vercel"], ["AWS"], ["WordPress", "wordpress"]
+    ]}
+  ],
+
+  "certifications": [
+    ["AB-400: Power Platform Developer", "exam booked", "30 Nov 2026"],
+    ["GH-300: GitHub Copilot", "rescheduling", ""],
+    ["AB-620: AI Agent Builder (Copilot Studio)", "up next", "after AB-400"]
+  ]
+}
