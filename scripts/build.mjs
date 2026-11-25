@@ -536,7 +536,7 @@ for (const T of Object.values(THEMES)) {
     if (g) {
       files[`github-${sfx}`] = github(T, phone, g);
       files[`graph-6m-${sfx}`] = heatmap(T, phone, g);
-      files[`graph-12m-${sfx}`] = yearGraph(T, phone, g.last.days, `Last 12 months: ${fmt(g.last.total)} contributions`);
+      files[`graph-12m-${sfx}`] = yearGraph(T, phone, g.last.days, `Last 12 months: ${fmt(lastYearTotal(g))} profile contributions`);
       for (const y of g.years) files[`graph-${y.year}-${sfx}`] = yearGraph(T, phone, y.days, `${y.year}: ${fmt(y.total)} contributions`);
       files[`line-30d-${sfx}`] = chart30(T, phone, g);
     }
@@ -545,5 +545,5 @@ for (const T of Object.values(THEMES)) {
 }
 for (const [name, svg] of Object.entries(files)) await writeFile(new URL(`${name}.svg`, out), svg);
 await writeFile(new URL("README.md", root), readme(g));
-console.log(`Wrote ${Object.keys(files).length} cards and README.md${g ? ` (${g.last.total} contributions in the last year)` : " (no GitHub data yet)"}.`);
+console.log(`Wrote ${Object.keys(files).length} cards and README.md${g ? ` (${lastYearTotal(g)} profile contributions, ${g.last.total} public contributions in the last year)` : " (no GitHub data yet)"}.`);
 if (stale) process.exitCode = 1;
