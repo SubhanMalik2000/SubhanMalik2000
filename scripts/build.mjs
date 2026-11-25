@@ -27,13 +27,13 @@ const THEMES = {
     name: "dark", card: "#141922", card2: "#1b212c", grid: "#1f2633", line: "#2a3242", fg: "#e8eaf0", muted: "#a7aebd", faint: "#858c9c",
     on: "#0d1117", term: "#0b0e14",
     blue: "#7c9bff", green: "#4cc38a", violet: "#b39cf5", amber: "#e8b45e", rose: "#f08aa6",
-    tint: 0.13, stroke: 0.5, heat: ["#1b212c", "#1f5c41", "#2b8a5c", "#3fb57a", "#5fe09c"],
+    tint: 0.13, stroke: 0.5, heat: ["#161b22", "#0e4429", "#006d32", "#26a641", "#39d353"],
   },
   light: {
     name: "light", card: "#ffffff", card2: "#f2f4f8", grid: "#eef1f5", line: "#d9dee6", fg: "#1c2128", muted: "#4f5866", faint: "#6c7583",
     on: "#ffffff", term: "#f7f8fa",
     blue: "#3d5bd9", green: "#1d7f4e", violet: "#7048e8", amber: "#a86b0c", rose: "#c22a5c",
-    tint: 0.09, stroke: 0.45, heat: ["#eef1f5", "#b6e6c9", "#6fcf97", "#2f9e62", "#1b6e41"],
+    tint: 0.09, stroke: 0.45, heat: ["#ebedf0", "#9be9a8", "#40c463", "#30a14e", "#216e39"],
   },
 };
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -213,7 +213,7 @@ function github(T, phone, g) {
   const firstYear = g.createdAt.slice(0, 4);
   const sinceTotal = g.years.reduce((a, y) => a + y.total, 0);
   const tiles = [
-    [fmt(g.last.total), ["contributions in", "the last year"], T.blue, "calendar"],
+    [fmt(g.last.total), ["contributions in", "the last year"], T.green, "calendar"],
     [`${s.current} ${s.current === 1 ? "day" : "days"}`, s.since ? ["current streak,", `since ${human(s.since).slice(0, -5)}`] : ["current streak"], T.green, "flame"],
     [`${s.longest} ${s.longest === 1 ? "day" : "days"}`, ["longest streak", "in the last year"], T.amber, "trophy"],
     [fmt(sinceTotal), ["contributions", `since ${firstYear}`], T.violet, "bars"],
@@ -331,8 +331,8 @@ function chart30(T, phone, g) {
     const a = P[Math.max(0, i - 1)], b = P[i], c = P[i + 1], e = P[Math.min(P.length - 1, i + 2)];
     path += ` C${r(b[0] + (c[0] - a[0]) / 6)},${r(Math.min(y1, b[1] + (c[1] - a[1]) / 6))} ${r(c[0] - (e[0] - b[0]) / 6)},${r(Math.min(y1, c[1] - (e[1] - b[1]) / 6))} ${r(c[0])},${r(c[1])}`;
   }
-  d.defs.push(`<linearGradient id="ar" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${T.rose}" stop-opacity="0.35"/><stop offset="1" stop-color="${T.rose}" stop-opacity="0"/></linearGradient>`);
-  d.raw(`<path d="${path} L${x1},${y1} L${x0},${y1} Z" fill="url(#ar)"/><path d="${path}" fill="none" stroke="${T.rose}" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/>`);
+  d.defs.push(`<linearGradient id="ar" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${T.green}" stop-opacity="0.35"/><stop offset="1" stop-color="${T.green}" stop-opacity="0"/></linearGradient>`);
+  d.raw(`<path d="${path} L${x1},${y1} L${x0},${y1} Z" fill="url(#ar)"/><path d="${path}" fill="none" stroke="${T.green}" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/>`);
   if (total === 0) {
     const lines = d.wrap("No public commits this month. Most of my work lives in private client repositories.", "body", 14, x1 - x0 - 40);
     lines.forEach((l, i) => d.text((x0 + x1) / 2, (y0 + y1) / 2 - (lines.length - 1) * 10 + i * 20, l, { size: 14, fill: T.muted, anchor: "middle" }));
@@ -485,6 +485,7 @@ function readme(g) {
     out.push(`<details><summary>Last 12 months: ${fmt(g.last.total)} contributions</summary>\n\n${pic("graph-12m", `${fmt(g.last.total)} contributions in the last 12 months`)}\n\n</details>`);
     for (const y of g.years) out.push(`<details><summary>${y.year}: ${fmt(y.total)} ${y.total === 1 ? "contribution" : "contributions"}</summary>\n\n${pic(`graph-${y.year}`, `${fmt(y.total)} contributions in ${y.year}`)}\n\n</details>`);
     out.push(pic("line-30d", "Contributions over the last 30 days"));
+    out.push(`<p align="center"><sub>Counts use GitHub's public contribution data. Your signed-in profile may include additional private contributions. <a href="https://github.com/${profile.user}">View the full profile graph</a>.</sub></p>`);
   }
   out.push(pic("whoami", `whoami: ${profile.whoami.summary}. ${profile.whoami.bio}`));
   out.push(pic("label-build", "What I build"));
