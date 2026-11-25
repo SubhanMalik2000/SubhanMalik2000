@@ -8,6 +8,8 @@
   "location": "Karachi, Pakistan",
   "showGitHubActivity": true,
   "_showGitHubActivity": "Set to false to hide the GitHub numbers, heatmap and 30-day chart from the README (they are still drawn).",
+  "reportedContributionsLastYear": 194,
+  "_reportedContributionsLastYear": "User-reported full-profile total; refresh when it changes. Daily graphs still use public contribution data.",
   "tags": ["client portals", "admin dashboards", "Power Pages", "AI agents", "automation"],
 
   "links": {

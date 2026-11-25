@@ -40,6 +40,7 @@ const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "
 const human = (s) => { const [y, m, d] = s.split("-").map(Number); return `${d} ${MONTHS[m - 1]} ${y}`; };
 const fmt = (n) => Number(n).toLocaleString("en-US");
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+const lastYearTotal = (g) => profile.reportedContributionsLastYear ?? g.last.total;
 
 // ---------------------------------------------------------------- svg kit
 class Doc {
@@ -213,7 +214,7 @@ function github(T, phone, g) {
   const firstYear = g.createdAt.slice(0, 4);
   const sinceTotal = g.years.reduce((a, y) => a + y.total, 0);
   const tiles = [
-    [fmt(g.last.total), ["contributions in", "the last year"], T.green, "calendar"],
+    [fmt(lastYearTotal(g)), ["contributions in", "the last year"], T.green, "calendar"],
     [`${s.current} ${s.current === 1 ? "day" : "days"}`, s.since ? ["current streak,", `since ${human(s.since).slice(0, -5)}`] : ["current streak"], T.green, "flame"],
     [`${s.longest} ${s.longest === 1 ? "day" : "days"}`, ["longest streak", "in the last year"], T.amber, "trophy"],
     [fmt(sinceTotal), ["contributions", `since ${firstYear}`], T.violet, "bars"],
@@ -248,7 +249,7 @@ function github(T, phone, g) {
     d.text(x + 58 + d.width(v, "display", 22), y + 32, l, { f: "mono", size: 13, fill: T.muted });
     if (phone) y += 60; else x += pw + 12;
   }
-  return d.render(w, h, `On GitHub: ${g.last.total} contributions in the last year, current streak ${s.current} days, longest streak ${s.longest} days, ${sinceTotal} contributions since ${firstYear}, ${g.repos} public repos.`);
+  return d.render(w, h, `On GitHub: ${lastYearTotal(g)} contributions in the last year, current streak ${s.current} days, longest streak ${s.longest} days, ${sinceTotal} contributions since ${firstYear}, ${g.repos} public repos.`);
 }
 
 function heatmap(T, phone, g) {
@@ -480,12 +481,14 @@ function readme(g) {
   out.push(`<p align="center">\n<a href="${L.linkedin.url}">${pic("badge-linkedin", "LinkedIn", "", { phone: false, height: 44 })}</a>\n<a href="${L.email.url}">${pic("badge-email", L.email.label, "", { phone: false, height: 44 })}</a>\n<a href="${L.site.url}">${pic("badge-site", L.site.label, "", { phone: false, height: 44 })}</a>\n</p>`);
   if (g && profile.showGitHubActivity !== false) {
     const s = streaks(g.last.days);
-    out.push(pic("github", `On GitHub: ${fmt(g.last.total)} contributions in the last year, ${s.current}-day current streak, ${g.repos} public repos.`));
-    out.push(pic("graph-6m", "Contributions per day over the last 6 months"));
-    out.push(`<details><summary>Last 12 months: ${fmt(g.last.total)} contributions</summary>\n\n${pic("graph-12m", `${fmt(g.last.total)} contributions in the last 12 months`)}\n\n</details>`);
+    const total = lastYearTotal(g);
+    out.push(`## ${fmt(total)} contributions in the last year`);
+    out.push(pic("github", `On GitHub: ${fmt(total)} contributions in the last year, ${s.current}-day public contribution streak, ${g.repos} public repos.`));
+    out.push(pic("graph-6m", "Public contributions per day over the last 6 months"));
+    out.push(`<details><summary>Last 12 months: ${fmt(total)} profile contributions</summary>\n\n${pic("graph-12m", `${fmt(total)} profile contributions in the last 12 months`)}\n\n</details>`);
     for (const y of g.years) out.push(`<details><summary>${y.year}: ${fmt(y.total)} ${y.total === 1 ? "contribution" : "contributions"}</summary>\n\n${pic(`graph-${y.year}`, `${fmt(y.total)} contributions in ${y.year}`)}\n\n</details>`);
-    out.push(pic("line-30d", "Contributions over the last 30 days"));
-    out.push(`<p align="center"><sub>Counts use GitHub's public contribution data. Your signed-in profile may include additional private contributions. <a href="https://github.com/${profile.user}">View the full profile graph</a>.</sub></p>`);
+    out.push(pic("line-30d", "Public contributions over the last 30 days"));
+    out.push(`<p align="center"><sub>The annual total is my full-profile count. The daily heatmap, streaks and charts use public contribution data, so they may not add up to this total. <a href="https://github.com/${profile.user}">View the full profile graph</a>.</sub></p>`);
   }
   out.push(pic("whoami", `whoami: ${profile.whoami.summary}. ${profile.whoami.bio}`));
   out.push(pic("label-build", "What I build"));
