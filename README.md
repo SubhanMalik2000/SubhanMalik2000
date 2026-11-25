@@ -10,7 +10,7 @@
 
 <picture><source media="(prefers-color-scheme: dark) and (max-width: 600px)" srcset="assets/github-phone-dark.svg"><source media="(max-width: 600px)" srcset="assets/github-phone-light.svg"><source media="(prefers-color-scheme: dark)" srcset="assets/github-dark.svg"><img src="assets/github-light.svg" width="100%" alt="On GitHub: 192 contributions in the last year, 1-day public contribution streak, 24 public repos."></picture>
 
-<picture><source media="(prefers-color-scheme: dark) and (max-width: 600px)" srcset="assets/graph-6m-phone-dark.svg"><source media="(max-width: 600px)" srcset="assets/graph-6m-phone-light.svg"><source media="(prefers-color-scheme: dark)" srcset="assets/graph-6m-dark.svg"><img src="assets/graph-6m-light.svg" width="100%" alt="Public contributions per day over the last 6 months"></picture>
+<picture><source media="(prefers-color-scheme: dark) and (max-width: 600px)" srcset="assets/graph-6m-phone-dark.svg"><source media="(max-width: 600px)" srcset="assets/graph-6m-phone-light.svg"><source media="(prefers-color-scheme: dark)" srcset="assets/graph-6m-dark.svg"><img src="assets/graph-6m-light.svg" width="100%" alt="Illustrative sample heatmap for the last 6 months; not actual contribution data"></picture>
 
 <details><summary>Last 12 months: 192 profile contributions</summary>
 
@@ -66,9 +66,9 @@
 
 </details>
 
-<picture><source media="(prefers-color-scheme: dark) and (max-width: 600px)" srcset="assets/line-30d-phone-dark.svg"><source media="(max-width: 600px)" srcset="assets/line-30d-phone-light.svg"><source media="(prefers-color-scheme: dark)" srcset="assets/line-30d-dark.svg"><img src="assets/line-30d-light.svg" width="100%" alt="Public contributions over the last 30 days"></picture>
+<picture><source media="(prefers-color-scheme: dark) and (max-width: 600px)" srcset="assets/line-30d-phone-dark.svg"><source media="(max-width: 600px)" srcset="assets/line-30d-phone-light.svg"><source media="(prefers-color-scheme: dark)" srcset="assets/line-30d-dark.svg"><img src="assets/line-30d-light.svg" width="100%" alt="Illustrative sample wave chart for the last 30 days; not actual contribution data"></picture>
 
-<p align="center"><sub>The annual total is my full-profile count. The daily heatmap, streaks and charts use public contribution data, so they may not add up to this total. <a href="https://github.com/SubhanMalik2000">View the full profile graph</a>.</sub></p>
+<p align="center"><sub>The annual total is my full-profile count. The six-month heatmap and 30-day wave use illustrative sample data, not actual daily activity. Yearly graphs and streaks use public GitHub data. <a href="https://github.com/SubhanMalik2000">View the full profile graph</a>.</sub></p>
 
 <picture><source media="(prefers-color-scheme: dark) and (max-width: 600px)" srcset="assets/whoami-phone-dark.svg"><source media="(max-width: 600px)" srcset="assets/whoami-phone-light.svg"><source media="(prefers-color-scheme: dark)" srcset="assets/whoami-dark.svg"><img src="assets/whoami-light.svg" width="100%" alt="whoami: subhan · senior solution engineer · Karachi, Pakistan. I build client portals, admin dashboards and AI features for enterprise apps."></picture>
 

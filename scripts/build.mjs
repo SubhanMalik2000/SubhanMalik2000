@@ -150,6 +150,14 @@ function streaks(days) {
   return { current, since, longest };
 }
 const level = (count, max) => (count === 0 ? 0 : count / max > 0.75 ? 4 : count / max > 0.5 ? 3 : count / max > 0.25 ? 2 : 1);
+const SAMPLE_WEEKLY_ACTIVITY = [2, 1, 2, 3, 2, 1, 2, 2, 3, 1, 2, 2, 1, 3, 2, 2, 1, 2, 3, 2, 1, 2, 2, 3, 1, 2];
+const SAMPLE_DAILY_ACTIVITY = [0, 1, 2, 1, 2, 1, 0];
+function illustrativeCount(date) {
+  const day = new Date(`${date}T00:00:00Z`);
+  const week = Math.floor(day.getTime() / (7 * 24 * 60 * 60 * 1000)) % SAMPLE_WEEKLY_ACTIVITY.length;
+  const daily = SAMPLE_DAILY_ACTIVITY[day.getUTCDay()];
+  return daily ? Math.max(1, Math.round(SAMPLE_WEEKLY_ACTIVITY[week] * daily / 2)) : 0;
+}
 
 // ---------------------------------------------------------------- cards
 function hero(T, phone) {
@@ -256,14 +264,15 @@ function heatmap(T, phone, g) {
   const d = new Doc(T);
   const w = phone ? 440 : 880, pad = phone ? 20 : 28;
   const nWeeks = phone ? 13 : 26;
-  const weeks = weeksOf(g.last.days).slice(-nWeeks);
+  const weeks = weeksOf(g.last.days).slice(-nWeeks)
+    .map((week) => week.map((day) => ({ ...day, count: illustrativeCount(day.date) })));
   const flat = weeks.flat();
   const total = flat.reduce((a, x) => a + x.count, 0);
   const max = Math.max(1, ...flat.map((x) => x.count));
   const gap = 4, cw = (w - pad * 2 - gap * (nWeeks - 1)) / nWeeks, ch = phone ? 24 : 22, top = 86;
   const h = top + 7 * (ch + gap) + 46;
   d.frame(w, h);
-  d.spans(pad, 44, [[fmt(total), { f: "display", size: 22 }], [` contributions in the last ${phone ? "3" : "6"} months`, { f: "mono", size: phone ? 13 : 15, fill: T.muted }]]);
+  d.spans(pad, 44, [[fmt(total), { f: "display", size: 22 }], [` illustrative sample · last ${phone ? "3" : "6"} months`, { f: "mono", size: phone ? 13 : 15, fill: T.muted }]]);
   let lastM = -1, lastX = -99;
   weeks.forEach((wk, wi) => {
     const off = wi === 0 ? 7 - wk.length : 0;
@@ -287,7 +296,7 @@ function heatmap(T, phone, g) {
   d.text(lx - 8, h - 18, "Less", { f: "mono", size: 12, fill: T.faint, anchor: "end" });
   T.heat.forEach((c, i) => d.raw(`<rect x="${lx + i * 16}" y="${h - 29}" width="12" height="12" rx="3" fill="${c}" stroke="${T.line}" stroke-width="${i ? 0 : 1}"/>`));
   d.text(w - pad, h - 18, "More", { f: "mono", size: 12, fill: T.faint, anchor: "end" });
-  return d.render(w, h, `${total} contributions in the last ${phone ? 3 : 6} months`);
+  return d.render(w, h, `Illustrative sample heatmap: ${total} contributions in the last ${phone ? 3 : 6} months. Not actual GitHub activity.`);
 }
 
 function yearGraph(T, phone, days, title) {
@@ -309,13 +318,14 @@ function yearGraph(T, phone, days, title) {
 function chart30(T, phone, g) {
   const d = new Doc(T);
   const w = phone ? 440 : 880, h = phone ? 280 : 310;
-  const pts30 = [...g.last.days].sort((a, b) => a.date.localeCompare(b.date)).slice(-30);
+  const pts30 = [...g.last.days].sort((a, b) => a.date.localeCompare(b.date)).slice(-30)
+    .map((day) => ({ ...day, count: illustrativeCount(day.date) }));
   const total = pts30.reduce((a, x) => a + x.count, 0);
   const x0 = phone ? 44 : 64, x1 = w - (phone ? 18 : 30), y0 = 80, y1 = h - (phone ? 70 : 74);
   const nice = Math.max(4, Math.ceil(Math.max(...pts30.map((p) => p.count)) / 4) * 4);
   const X = (i) => x0 + (i / (pts30.length - 1)) * (x1 - x0), Y = (v) => y1 - (v / nice) * (y1 - y0);
   d.frame(w, h);
-  d.spans(phone ? 20 : 28, 44, [[fmt(total), { f: "display", size: 22 }], [" contributions in the last 30 days", { f: "mono", size: phone ? 13 : 15, fill: T.muted }]]);
+  d.spans(phone ? 20 : 28, 44, [[fmt(total), { f: "display", size: 22 }], [" illustrative sample · last 30 days", { f: "mono", size: phone ? 13 : 15, fill: T.muted }]]);
   for (let k = 0; k <= 4; k++) {
     const v = (nice / 4) * k, y = Y(v);
     d.raw(`<line x1="${x0}" x2="${x1}" y1="${r(y)}" y2="${r(y)}" stroke="${T.line}" ${k ? 'stroke-dasharray="3 5"' : ""}/>`);
@@ -333,12 +343,12 @@ function chart30(T, phone, g) {
     path += ` C${r(b[0] + (c[0] - a[0]) / 6)},${r(Math.min(y1, b[1] + (c[1] - a[1]) / 6))} ${r(c[0] - (e[0] - b[0]) / 6)},${r(Math.min(y1, c[1] - (e[1] - b[1]) / 6))} ${r(c[0])},${r(c[1])}`;
   }
   d.defs.push(`<linearGradient id="ar" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${T.green}" stop-opacity="0.35"/><stop offset="1" stop-color="${T.green}" stop-opacity="0"/></linearGradient>`);
-  d.raw(`<path d="${path} L${x1},${y1} L${x0},${y1} Z" fill="url(#ar)"/><path d="${path}" fill="none" stroke="${T.green}" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/>`);
-  if (total === 0) {
-    const lines = d.wrap("No public commits this month. Most of my work lives in private client repositories.", "body", 14, x1 - x0 - 40);
-    lines.forEach((l, i) => d.text((x0 + x1) / 2, (y0 + y1) / 2 - (lines.length - 1) * 10 + i * 20, l, { size: 14, fill: T.muted, anchor: "middle" }));
-  }
-  return d.render(w, h, `${total} contributions in the last 30 days`);
+  d.raw(`<path d="${path} L${x1},${y1} L${x0},${y1} Z" fill="url(#ar)"/><path d="${path}" fill="none" stroke="${T.green}" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>`);
+  pts30.forEach((p, i) => {
+    if (i % 5 === 0 || i === pts30.length - 1)
+      d.raw(`<circle cx="${r(X(i))}" cy="${r(Y(p.count))}" r="3.5" fill="${T.green}" stroke="${T.card}" stroke-width="2"/>`);
+  });
+  return d.render(w, h, `Illustrative sample wave: ${total} contributions in the last 30 days. Not actual GitHub activity.`);
 }
 
 function whoami(T, phone) {
@@ -484,11 +494,11 @@ function readme(g) {
     const total = lastYearTotal(g);
     out.push(`## ${fmt(total)} contributions in the last year`);
     out.push(pic("github", `On GitHub: ${fmt(total)} contributions in the last year, ${s.current}-day public contribution streak, ${g.repos} public repos.`));
-    out.push(pic("graph-6m", "Public contributions per day over the last 6 months"));
+    out.push(pic("graph-6m", "Illustrative sample heatmap for the last 6 months; not actual contribution data"));
     out.push(`<details><summary>Last 12 months: ${fmt(total)} profile contributions</summary>\n\n${pic("graph-12m", `${fmt(total)} profile contributions in the last 12 months`)}\n\n</details>`);
     for (const y of g.years) out.push(`<details><summary>${y.year}: ${fmt(y.total)} ${y.total === 1 ? "contribution" : "contributions"}</summary>\n\n${pic(`graph-${y.year}`, `${fmt(y.total)} contributions in ${y.year}`)}\n\n</details>`);
-    out.push(pic("line-30d", "Public contributions over the last 30 days"));
-    out.push(`<p align="center"><sub>The annual total is my full-profile count. The daily heatmap, streaks and charts use public contribution data, so they may not add up to this total. <a href="https://github.com/${profile.user}">View the full profile graph</a>.</sub></p>`);
+    out.push(pic("line-30d", "Illustrative sample wave chart for the last 30 days; not actual contribution data"));
+    out.push(`<p align="center"><sub>The annual total is my full-profile count. The six-month heatmap and 30-day wave use illustrative sample data, not actual daily activity. Yearly graphs and streaks use public GitHub data. <a href="https://github.com/${profile.user}">View the full profile graph</a>.</sub></p>`);
   }
   out.push(pic("whoami", `whoami: ${profile.whoami.summary}. ${profile.whoami.bio}`));
   out.push(pic("label-build", "What I build"));
