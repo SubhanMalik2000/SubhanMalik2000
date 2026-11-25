@@ -1,0 +1,44 @@
+name: Refresh profile cards
+
+# Redraws every README card from public GitHub data and commits assets/, README.md and the saved data.
+# No secret needed: the built-in GITHUB_TOKEN only lifts the API rate limit.
+on:
+  schedule:
+    - cron: "17 0 * * *" # every night, 05:17 Karachi time
+  workflow_dispatch: # "Run workflow" button on the Actions tab
+  push:
+    paths:
+      - "profile.json"
+      - "scripts/**"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: profile-cards
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      # If GitHub can't be read, the build draws from the last saved copy and exits non-zero,
+      # so the cards still get committed and the run is then marked failed.
+      - id: build
+        run: node scripts/build.mjs
+        continue-on-error: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Commit the refreshed cards
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets README.md data/github-cache.json 2>/dev/null || git add assets README.md
+          if git diff --cached --quiet; then echo "nothing changed"; else git commit -m "Refresh profile cards" && git push; fi
+      - name: Mark the run failed if GitHub data was stale
+        if: steps.build.outcome == 'failure'
+        run: exit 1
