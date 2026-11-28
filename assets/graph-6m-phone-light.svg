@@ -185,6 +185,8 @@
 <text x="406.5" y="213.6" font-family="sa-monob" font-size="10" fill="#1c2128" text-anchor="middle" >1</text>
 <rect x="392.9" y="226" width="27.1" height="24" rx="5" fill="#40c463"><title>1 on 2026-11-27</title></rect>
 <text x="406.5" y="241.6" font-family="sa-monob" font-size="10" fill="#1c2128" text-anchor="middle" >1</text>
+<rect x="392.9" y="254" width="27.1" height="24" rx="5" fill="#ebedf0"><title>0 on 2026-11-28</title></rect>
+<text x="406.5" y="269.6" font-family="sa-mono" font-size="10" fill="#6c7583" text-anchor="middle" >0</text>
 <text x="20" y="310" font-family="sa-mono" font-size="12" fill="#6c7583" text-anchor="start" >contributions per day</text>
 <text x="294" y="310" font-family="sa-mono" font-size="12" fill="#6c7583" text-anchor="end" >Less</text>
 <rect x="302" y="299" width="12" height="12" rx="3" fill="#ebedf0" stroke="#d9dee6" stroke-width="1"/>
